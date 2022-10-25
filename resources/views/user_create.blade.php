@@ -1,8 +1,8 @@
-<form id="update" name="update" method="post" action="{{ action('PostController@create') }}">
+<form id="update" name="update" method="post" action="{{ action('PostController' , 'create') }}">
 
     <table width="300" border="0" align="center" cellpadding="5" cellspacing="0" bgcolor="#F2F2F2">
         @csrf
-        
+
         <tr>
             <div class="content">
                 <td colspan="2" align="center" bgcolor="#CCCCCC">會員資料</td>

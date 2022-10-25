@@ -23,20 +23,20 @@ Route::get('/a', function () {
     return view('a');
 });
 
-Route::any('/homeLogin', 'PostController@create2');
-
-Route::get('/post/create', [PostController::class, 'create']);
-
-Route::get('/post/create2', [PostController::class, 'create2'])->name("koala");
-
-Route::get('/post/create3', [PostController::class, 'create']);
-
-Route::post('/post', [PostController::class, 'store'])->name("koala2");
-
-
-Route::get('/greeting', function () {
-    return 'Hello World';
-});
-
-
-Route::get('/user', [UserController::class, 'index']);
+//Route::any('/homeLogin', 'PostController@create2');
+//
+//Route::get('/post/create', [PostController::class, 'create']);
+//
+//Route::get('/post/create2', [PostController::class, 'create2'])->name("koala");
+//
+//Route::get('/post/create3', [PostController::class, 'create']);
+//
+//Route::post('/post', [PostController::class, 'store'])->name("koala2");
+//
+//
+//Route::get('/greeting', function () {
+//    return 'Hello World';
+//});
+//
+//
+//Route::get('/user', [UserController::class, 'index']);
