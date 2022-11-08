@@ -13,9 +13,14 @@ class AnimalController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        //預設值
+        $limit = $request->limut ?? 10 ;
+
+        // 使用model orderBy方法加入SQL語法排序
+        $animals = Animal::orderBy('id' , 'desc')->paginate($limit)->appends($request->query());
+        return response($animals , Response::HTTP_OK);
     }
 
     /**
@@ -39,13 +44,8 @@ class AnimalController extends Controller
         //
 
         $animal = Animal::create($request->all());
-
-//        dd("test");
-
         $animal = $animal->refresh();
-
-//        dd("test2");
-
+//        return $animal->get();
         return response($animal , Response::HTTP_CREATED);
     }
 
@@ -58,6 +58,7 @@ class AnimalController extends Controller
     public function show(Animal $animal)
     {
         //
+        return response($animal , Response::HTTP_OK);
     }
 
     /**
@@ -81,6 +82,8 @@ class AnimalController extends Controller
     public function update(Request $request, Animal $animal)
     {
         //
+        $animal->update($request->all());
+        return response($animal, Response::HTTP_OK);
     }
 
     /**
@@ -92,5 +95,9 @@ class AnimalController extends Controller
     public function destroy(Animal $animal)
     {
         //
+
+        $animal->delete();
+        return response(null , Response::HTTP_NO_CONTENT);
+
     }
 }

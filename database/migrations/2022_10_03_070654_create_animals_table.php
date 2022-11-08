@@ -24,6 +24,7 @@ return new class extends Migration
             $table->text('personality')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
