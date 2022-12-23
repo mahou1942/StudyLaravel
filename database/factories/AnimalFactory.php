@@ -21,7 +21,7 @@ class AnimalFactory extends Factory
     public function definition()
     {
         return [
-            // numberBetween隨機產生範圍1到3之間的整數
+            // numberBetween隨機產生範圍1到5之間的整數
             'type_id' => $this->faker->numberBetween(1,5),
             'name' => $this->faker->name,
             'birthday' => $this->faker->date(),
