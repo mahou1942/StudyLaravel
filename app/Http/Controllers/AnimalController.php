@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\AnimalResource;
+use App\Http\Resources\AnimalCollection;
 use App\Models\Animal;
+use App\Models\Type;
 use Illuminate\Support\Facades\Cache;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Http\Request;
@@ -44,7 +47,7 @@ class AnimalController extends Controller
         $limit = $request->limit ?? 10 ;
 
         // 建立查詢建構器，分段的方式撰寫SQL語句
-        $query = Animal::query();
+        $query = Animal::query()->with('type');
 
         // 篩選code邏輯，如果有設定filters參數
         if(isset($request->filters)){
@@ -73,11 +76,14 @@ class AnimalController extends Controller
 //            ->paginate($limit)
 //            ->appends($request->query());
 
+//        $animals = Type::find('1')->animals;
+
         $animals = $query->paginate($limit)->appends($request->query());
 
         //沒有塊取紀錄記住資料，並設定60秒過期，快取名稱使用網址命名。
         return Cache::remember($fullUrl , 60 , function () use ($animals){
-            return response($animals , Response::HTTP_OK);
+//            return response($animals , Response::HTTP_OK);
+            return new AnimalResource($animals);
         });
     }
 
@@ -100,7 +106,7 @@ class AnimalController extends Controller
     public function store(Request $request)
     {
         $this->validate($request , [
-            'type_id' => 'nullable|integer',        //允許null或整數
+            'type_id' => 'nullable|exists:types,id',        //允許null或整數
             'name' => 'required|string|max:255',    //必填文字最多255字元
             'birthday' => 'nullable|date',
             'area' => 'nullable|string|max:255',    //允許null或文字最多255字元
@@ -124,8 +130,8 @@ class AnimalController extends Controller
      */
     public function show(Animal $animal)
     {
-        //
-        return response($animal , Response::HTTP_OK);
+        return new AnimalResource($animal);
+//        return response($animal , Response::HTTP_OK);
     }
 
     /**
@@ -149,7 +155,7 @@ class AnimalController extends Controller
     public function update(Request $request, Animal $animal)
     {
         $this->validate($request , [
-            'type_id' => 'nullable|integer',        //允許null或整數
+            'type_id' => 'nullable|exists:types,id',        //允許null或整數
             'name' =>  'string|max:255',
             'birthday' => 'nullable|date',
             'area' => 'nullable|string|max:255',    //允許null或文字最多255字元
